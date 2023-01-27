@@ -5,7 +5,8 @@
              xmlns:local="clr-namespace:LiteDbExplorer"
              x:DataType="local:MainPageViewModel"
              x:Class="LiteDbExplorer.MainPage"
-             x:Name="MainPageRef">
+             x:Name="MainPageRef"
+             Title="LiteDbExplorer">
     <ContentPage.Resources>
         <local:BsonToStringConverter x:Key="bsonToString" />
         <toolkit:IsNotEqualConverter x:Key="IsNotEqualConverter" />
@@ -21,7 +22,7 @@
             <MenuFlyoutItem Text="Open database" Command="{Binding LoadCollectionsCommand}" />
             <MenuFlyoutItem Text="Exit" Command="{Binding ExitCommand}"/>
         </MenuBarItem>
-        </ContentPage.MenuBarItems>
+    </ContentPage.MenuBarItems>
     <toolkit:DockLayout>
         <StackLayout toolkit:DockLayout.DockPosition="Top" Orientation="Horizontal">
             <Label Text="Database:" FontSize="22" Padding="5,5,5,5" BackgroundColor="Gray" ></Label>
@@ -69,5 +70,5 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </toolkit:DockLayout>
+    </toolkit:DockLayout>    
 </ContentPage>

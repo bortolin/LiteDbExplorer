@@ -4,8 +4,8 @@
              xmlns:local="clr-namespace:LiteDbExplorer"
              x:Class="LiteDbExplorer.ItemLookupPage"
              Title="ItemLookupPage">
-    <VerticalStackLayout>
-        <Label Text="{Binding CurrentOverRow}"></Label>
+    
+       
         <CollectionView ItemsSource="{Binding DocData}">
          <CollectionView.ItemTemplate>
              <DataTemplate>
@@ -19,5 +19,5 @@
              </DataTemplate>
          </CollectionView.ItemTemplate>
         </CollectionView>
-    </VerticalStackLayout>
+    
 </ContentPage>
