@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:local="clr-namespace:LiteDbExplorer"
+             x:DataType="local:MainPageViewModel"
+             x:Class="LiteDbExplorer.MainPage"
+             x:Name="MainPageRef">
+    <ContentPage.Resources>
+        <local:BsonToStringConverter x:Key="bsonToString" />
+        <toolkit:IsNotEqualConverter x:Key="IsNotEqualConverter" />
+        <ResourceDictionary>
+            <x:Double x:Key="dataFont">24</x:Double>
+            <Style x:Key="dataFontStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{DynamicResource dataFont}" ></Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.MenuBarItems>
+        <MenuBarItem Text="File">
+            <MenuFlyoutItem Text="Open database" Command="{Binding LoadCollectionsCommand}" />
+            <MenuFlyoutItem Text="Exit" Command="{Binding ExitCommand}"/>
+        </MenuBarItem>
+        </ContentPage.MenuBarItems>
+    <toolkit:DockLayout>
+        <StackLayout toolkit:DockLayout.DockPosition="Top" Orientation="Horizontal">
+            <Label Text="Database:" FontSize="22" Padding="5,5,5,5" BackgroundColor="Gray" ></Label>
+            <Label Text="{Binding FileName}" ToolTipProperties.Text="{Binding FilePath}" FontSize="22" Padding="5,5,5,5" HorizontalOptions="FillAndExpand"></Label>
+            <Button Text="+" HorizontalOptions="End" Margin="2,2,2,2" Clicked="IncraseFontButton_Clicked"></Button>
+            <Button Text="-" HorizontalOptions="End" Margin="2,2,2,2" Clicked="DecraseFontButton_Clicked"></Button>
+        </StackLayout>
+        <StackLayout toolkit:DockLayout.DockPosition="Bottom" Orientation="Horizontal" BackgroundColor="Gray">
+            <Label Text="Total record:" HeightRequest="30" HorizontalTextAlignment="End" Padding="5,5,5,5" FontSize="20"></Label>
+            <Label Text="{Binding TotalRecord}" HeightRequest="30" HorizontalTextAlignment="End" Padding="5,5,5,5" FontSize="20" />
+        </StackLayout>
+        <StackLayout toolkit:DockLayout.DockPosition="Left" WidthRequest="300" Padding="10,10,10,10">
+            <ListView ItemsSource="{Binding CollectionsNames}" SelectedItem="{Binding SelectedCollection}">
+                <FlyoutBase.ContextFlyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Text="Export collection"
+                            Command="{Binding ExportCollectionCommand}"/>
+                    </MenuFlyout>
+                </FlyoutBase.ContextFlyout> 
+            </ListView>
+        </StackLayout>
+        <CollectionView ItemsSource="{Binding CollectionData}" Margin="5,5,10,5" x:Name="DataView">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout ItemSpacing="5" Orientation="Vertical"></LinearItemsLayout>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame BorderColor="Gray">
+                      <Frame.GestureRecognizers>
+                          <TapGestureRecognizer NumberOfTapsRequired="2" Command="{Binding Path=BindingContext.OpenDataCommand, Source={x:Reference Name=MainPageRef}}"
+                           CommandParameter="{Binding .}"></TapGestureRecognizer>
+                      </Frame.GestureRecognizers>
+                        <FlyoutBase.ContextFlyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Text="Open detail"
+                           Command="{Binding Path=BindingContext.OpenDataCommand, Source={x:Reference Name=MainPageRef}}"
+                           CommandParameter="{Binding .}" />
+                                <MenuFlyoutItem Text="Copy to clipboard"
+                           Command="{Binding Path=BindingContext.CopyToClipboardCommand, Source={x:Reference Name=MainPageRef}}"
+                           CommandParameter="{Binding .}" />
+                            </MenuFlyout>
+                        </FlyoutBase.ContextFlyout> 
+                        <Label Text="{Binding Converter={StaticResource bsonToString}, Path=. }" VerticalTextAlignment="Center" Style="{DynamicResource dataFontStyle}"/>
+                    </Frame> 
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </toolkit:DockLayout>
+</ContentPage>
