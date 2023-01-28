@@ -39,10 +39,21 @@ namespace LiteDbExplorer.Services
                 {
                     //Set title not work on Mac :(
                     Title = "Detail",
-                    Page = page
+                    Page = page,
+                    // Position and dimension of window not work on Mac
+                    Width = 900,
+                    Height = 800
                 };
 
                 Application.Current.OpenWindow(secondWindow);
+
+#if MACCATALYST
+                //Workaround for Mac
+                secondWindow.MinimumWidth = 900;
+                secondWindow.MaximumWidth = 900;
+                secondWindow.MinimumHeight = 800;
+                secondWindow.MaximumHeight = 800;
+#endif
             }
         }
     }
