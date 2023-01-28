@@ -9,6 +9,7 @@ using CommunityToolkit.Maui.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LiteDB;
+using LiteDbExplorer.Services;
 
 namespace LiteDbExplorer
 {
@@ -19,19 +20,20 @@ namespace LiteDbExplorer
         private string _filePath;
         private string _selectedCollection;
         private INavigationService _navigationService;
+        private IFileService _fileService;
         private int _totalRecord;
         private double _fontSize;
 
-        public MainPageViewModel(INavigationService navigationService)
+        public MainPageViewModel(INavigationService navigationService, IFileService fileService)
 		{
             _navigationService = navigationService;
+            _fileService = fileService;
 
             LoadCollectionsCommand = new AsyncRelayCommand(LoadCollections);
-            OpenDataCommand = new RelayCommand<BsonDocument>(OpenData);
-            CopyToClipboardCommand = new AsyncRelayCommand<BsonDocument>(CopyToClipboard);
+            OpenDataCommand = new RelayCommand<BsonDocument>(OpenDetailData);
             ExportCollectionCommand = new AsyncRelayCommand(ExportCollection);
+            CopyToClipboardCommand = new AsyncRelayCommand<BsonDocument>(async (bson) => { await Clipboard.Default.SetTextAsync(bson.ToString()); });
             ExitCommand = new RelayCommand(() => { Application.Current.Quit(); });
-
         }
 
         public ICommand LoadCollectionsCommand { get; }
@@ -58,9 +60,13 @@ namespace LiteDbExplorer
             }
         }
 
+        /// <summary>
+        /// Loads list of collection from litedb database
+        /// </summary>
         private async Task LoadCollections(CancellationToken cancellationToken) {
 
-            var result = await FilePicker.Default.PickAsync();
+            //Open file dialog
+            var result = await _fileService.OpenFile();
 
             if (result != null)
             {
@@ -76,6 +82,10 @@ namespace LiteDbExplorer
             }
         }
 
+        /// <summary>
+        /// Load list of objects from LiteDb collection
+        /// </summary>
+        /// <param name="collName"></param>
         private void LoadCollectionData(string collName)
         {
             CollectionData.Clear();
@@ -91,30 +101,17 @@ namespace LiteDbExplorer
             TotalRecord = data.Count();
         }
 
-        private void OpenData(BsonDocument doc)
+        /// <summary>
+        /// Open windows with details of object
+        /// </summary>
+        private void OpenDetailData(BsonDocument doc)
         {
             _navigationService.NavigateToItemLookupPage(doc);
         }
 
-        private async Task CopyToClipboard(BsonDocument bson)
-        {
-            var jsonstring = bson.ToString();
-            await Clipboard.Default.SetTextAsync(jsonstring);
-        }
-
-        private async Task SaveFile(Stream stream,string fileName, CancellationToken cancellationToken)
-        {
-            try
-            {
-                var fileLocation = await FileSaver.Default.SaveAsync(fileName, stream, cancellationToken);
-                await Toast.Make($"File is saved: {fileLocation}").Show(cancellationToken);
-            }
-            catch (Exception ex)
-            {
-                await Toast.Make($"File is not saved, {ex.Message}").Show(cancellationToken);
-            }
-        }
-
+        /// <summary>
+        /// Export collection to json file
+        /// </summary>
         private async Task ExportCollection(CancellationToken cancellationToken)
         {
             var col = _ldb.GetCollection(SelectedCollection);
@@ -135,7 +132,8 @@ namespace LiteDbExplorer
                 writer.Flush();
                 stream.Position = 0;
 
-                await SaveFile(stream, "Test.json", cancellationToken);
+                //Save file dialog
+                await _fileService.SaveFile(stream, "Test.json", cancellationToken);
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui;
+using LiteDbExplorer.Services;
 using Microsoft.Extensions.Logging;
 
 namespace LiteDbExplorer;
@@ -22,6 +23,7 @@ public static class MauiProgram
         builder.Services.AddTransient<ItemLookupPage>();
         builder.Services.AddTransient<ItemLookupViewModel>();
 		builder.Services.AddSingleton<INavigationService, NavigationService>();
+		builder.Services.AddSingleton<IFileService, FileService>();
 
 #if DEBUG
         builder.Logging.AddDebug();

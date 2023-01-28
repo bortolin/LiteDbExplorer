@@ -2,13 +2,16 @@
 using System.Diagnostics;
 using LiteDB;
 
-namespace LiteDbExplorer
+namespace LiteDbExplorer.Services
 {
     public interface INavigationService
     {
         void NavigateToItemLookupPage(BsonDocument doc);
     }
 
+    /// <summary>
+    /// Navigation service used inside ViewModel for open new window or navigate to page
+    /// </summary>
     public class NavigationService : INavigationService
     {
         readonly IServiceProvider _services;
@@ -17,7 +20,7 @@ namespace LiteDbExplorer
         {
             get
             {
-                INavigation navigation = Application.Current?.MainPage?.Navigation;                
+                INavigation navigation = Application.Current.MainPage.Navigation;                
                 return navigation;
             }
         }
@@ -33,7 +36,8 @@ namespace LiteDbExplorer
             if (page is not null)
             {
                 var secondWindow = new Window
-                {   
+                {
+                    //Set title not work on Mac :(
                     Title = "Detail",
                     Page = page
                 };

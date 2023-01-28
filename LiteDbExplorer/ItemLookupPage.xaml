@@ -3,21 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:LiteDbExplorer"
              x:Class="LiteDbExplorer.ItemLookupPage"
-             Title="ItemLookupPage">
-    
-       
-        <CollectionView ItemsSource="{Binding DocData}">
+             Title="Detail">    
+        <CollectionView ItemsSource="{Binding DocData}" Margin="5,5,5,5">
          <CollectionView.ItemTemplate>
              <DataTemplate>
                  <StackLayout Orientation="Horizontal" Margin="5,5,5,5">
                      <Label Text="{Binding Item1}"
                             BackgroundColor="Gray"
-                            Padding="2,2,2,2" Margin="2,2,2,2" MinimumWidthRequest="200" FontSize="22" VerticalTextAlignment="Center"></Label>
-                     <Entry Text="{Binding Item2}" Margin="2,2,2,2" HorizontalOptions="Fill" FontSize="22">
+                            Padding="2,2,2,2"
+                            Margin="2,2,2,2" MinimumWidthRequest="200" FontSize="22"
+                            VerticalTextAlignment="Center"></Label>
+                     <Entry Text="{Binding Item2}"
+                            Margin="2,2,2,2" HorizontalOptions="Fill" FontSize="22">
                      </Entry>
                  </StackLayout>
              </DataTemplate>
          </CollectionView.ItemTemplate>
-        </CollectionView>
-    
+        </CollectionView>  
 </ContentPage>

@@ -17,15 +17,19 @@
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
+    <!-- Top bar menu-->
     <ContentPage.MenuBarItems>
         <MenuBarItem Text="File">
             <MenuFlyoutItem Text="Open database" Command="{Binding LoadCollectionsCommand}" />
             <MenuFlyoutItem Text="Exit" Command="{Binding ExitCommand}"/>
         </MenuBarItem>
     </ContentPage.MenuBarItems>
+
+    <!-- DockLayout (CommunityToolkit) -->
     <toolkit:DockLayout>
         <StackLayout toolkit:DockLayout.DockPosition="Top" Orientation="Horizontal">
             <Label Text="Database:" FontSize="22" Padding="5,5,5,5" BackgroundColor="Gray" ></Label>
+            <!-- ToolTip-->
             <Label Text="{Binding FileName}" ToolTipProperties.Text="{Binding FilePath}" FontSize="22" Padding="5,5,5,5" HorizontalOptions="FillAndExpand"></Label>
             <Button Text="+" HorizontalOptions="End" Margin="2,2,2,2" Clicked="IncraseFontButton_Clicked"></Button>
             <Button Text="-" HorizontalOptions="End" Margin="2,2,2,2" Clicked="DecraseFontButton_Clicked"></Button>
@@ -36,6 +40,7 @@
         </StackLayout>
         <StackLayout toolkit:DockLayout.DockPosition="Left" WidthRequest="300" Padding="10,10,10,10">
             <ListView ItemsSource="{Binding CollectionsNames}" SelectedItem="{Binding SelectedCollection}">
+                <!-- Context menu -->
                 <FlyoutBase.ContextFlyout>
                     <MenuFlyout>
                         <MenuFlyoutItem Text="Export collection"
@@ -55,6 +60,7 @@
                           <TapGestureRecognizer NumberOfTapsRequired="2" Command="{Binding Path=BindingContext.OpenDataCommand, Source={x:Reference Name=MainPageRef}}"
                            CommandParameter="{Binding .}"></TapGestureRecognizer>
                       </Frame.GestureRecognizers>
+                        <!-- Context menu -->
                         <FlyoutBase.ContextFlyout>
                             <MenuFlyout>
                                 <MenuFlyoutItem Text="Open detail"

@@ -28,4 +28,3 @@ namespace LiteDbExplorer
         public ObservableCollection<Tuple<string,string>> DocData { get; set; } = new ObservableCollection<Tuple<string, string>>();
 	}
 }
-
