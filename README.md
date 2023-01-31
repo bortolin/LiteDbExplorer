@@ -1,4 +1,7 @@
 # LiteDbExplorer
-Example MAUI desktop application for read LiteDb database content
+Example of .NET MAUI application to read LiteDb database file content.
 
-https://www.slideshare.net/MarcoBortolin/net-conf-2022-at-1nn0va-net-maui-focus-on-desktop-app
+Demo at .NET Conf 2022 Pordenone ".NET MAUI focus on Desktop App" (2022-01-28)
+https://netconf2022.1nn0va.it/
+
+Slides: https://github.com/bortolin/LiteDbExplorer/blob/main/NetConf2022_1nn0va_MAUIDesktop.pdf
